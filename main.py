@@ -1,19 +1,22 @@
 import webbrowser
-from googleapiclient.discovery import build, Resource
 import tkinter as tk
 from PIL import Image, ImageTk
-from io import BytesIO
 import requests
-def download_vid(id):
-    url = f"https://convert2mp3s.com/api/single/mp3?url=https://www.youtube.com/watch?v={id}"
-    webbrowser.open(url)
-def get_input():
-    search_query = input_entry.get()
-    search_youtube_videos(search_query, 1)
+
+from googleapiclient.discovery import build
+from io import BytesIO
 
 # Remplacez 'YOUR_API_KEY' par votre clé d'API YouTube
 api_key = 'YOUR_API_KEY'
 youtube = build('youtube', 'v3', developerKey=api_key)
+
+def download_vid(id):
+    url = f"https://convert2mp3s.com/api/single/mp3?url=https://www.youtube.com/watch?v={id}"
+    webbrowser.open(url)
+
+def get_input():
+    search_query = input_entry.get()
+    search_youtube_videos(search_query, 1)
 
 def search_youtube_videos(query, max_results):
     search_response = youtube.search().list(
@@ -35,15 +38,18 @@ def search_youtube_videos(query, max_results):
                 print("Image téléchargée avec succès")
             else:
                 print("Échec du téléchargement de l'image")
+            
             # Redimensionnement de l'image si nécessaire
-
+            
+            image.thumbnail((160, 90))  # Redimensionner l'image à une taille fixe
+            
             # Convertir l'image en un objet PhotoImage
             photo = ImageTk.PhotoImage(image)
             image_label = tk.Label(window, image=photo, pady=20)
             image_label.image = photo 
             image_label.pack()
             label.pack()
-            buttonr = tk.Button(window, text="Download", command=lambda: download_vid(video_id), pady=10, relief=tk.FLAT, bg="blue",highlightthickness=0, highlightbackground="blue", font=("Arial", 18), borderwidth=0, bd=0)
+            buttonr = tk.Button(window, text="Download", command=lambda: download_vid(video_id), pady=10, relief=tk.FLAT, bg="blue", highlightthickness=0, highlightbackground="blue", font=("Arial", 18), borderwidth=0, bd=0)
             buttonr.pack()
             input_entry.pack_forget()
             button.pack_forget()
@@ -57,6 +63,7 @@ window.geometry("300x300")
 
 label = tk.Label(window, text="DownTube", font=("Arial", 24), padx=10, pady=10, bg="#00CED1")
 label.pack()
+
 # Création du champ de saisie
 input_entry = tk.Entry(window)
 input_entry.pack(pady=40)
@@ -64,5 +71,6 @@ input_entry.pack(pady=40)
 # Création du bouton pour récupérer l'input
 button = tk.Button(window, text="Rechercher", command=get_input, relief=tk.FLAT, highlightthickness=0, bg="blue", highlightbackground="blue", font=("Arial", 18), borderwidth=0, bd=0)
 button.pack()
+
 # Lancement de la boucle principale
 window.mainloop()
