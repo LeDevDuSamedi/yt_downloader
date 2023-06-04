@@ -1,0 +1,5 @@
+webbrowser
+google-api-python-client
+tkinter
+Pillow
+requests
