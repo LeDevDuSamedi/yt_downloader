@@ -1,4 +1,4 @@
-# yt_downloader
+# YouTube Downloader
 A Fast YouTube Downloader in Python
 ## Install
 1. Download the files
